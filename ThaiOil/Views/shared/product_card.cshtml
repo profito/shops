@@ -1,0 +1,100 @@
+﻿@model ThaiOil.Models.Product
+@if (Model != null)
+{
+<div class="item_card cb">
+    <div class="left">
+        <div class="pic">
+            <img class="pic" alt="" src="@Model.path_big" />
+        </div>
+        <div class="related">
+            <h2><span>С ЭТИМ ТОВАРОМ ПОКУПАЮТ</span></h2>
+            <ul id="related_products" class="related_products"></ul>
+        </div>
+        <div class="vk_comment">
+            <h2><span>ОСТАВЬТЕ СВОЙ КОММЕНТАРИЙ</span></h2>
+            <div id="vk_product_comments"></div>
+            <script type="text/javascript">VK.Widgets.Comments('vk_product_comments', { width: 500, limit: 15, autoPublish: 1, pageUrl: 'http://thai-oil.ru/product/@(Model.alias)' });</script>
+        </div>
+    </div>
+    <div class="body">
+        <h1>@Model.title_full</h1>
+        <div class="cost">
+            <span class="real">@Model.cost.ToString(("### ### ### ### ##0")).Trim() р</span>
+            @if (Model.cost_old > 0) 
+            {
+            <del>@Model.cost_old.ToString(("### ### ### ### ##0")).Trim() р</del>
+            }
+            @if (Model.cost_old > Model.cost)
+            {
+            <span class="savings">Вы экономите <strong>@((Model.cost_old - Model.cost).ToString(("### ### ### ### ##0")).Trim())</strong> р</span>
+            }
+        </div>
+        <div class="btns">
+            <a class="btn_buy" href="#" data-what="@Model.title_short (@Model.cost.ToString(("### ### ### ### ##0")).Trim() р)">КУПИТЬ СЕЙЧАС</a>
+            <a class="btn_to_cart" href="#" data-alias="@Model.alias" data-title="@Model.title_short" data-cost="@Model.cost" data-pic="@Model.path_preview">В КОРЗИНУ</a>
+            <p class="h10"></p>
+            @*<p><a class="how_to_buy_cheaper" href="javascript:;" data-what="@Model.title_short (@Model.cost.ToString(("### ### ### ### ##0")).Trim() р)">Узнайте как купить дешевле!</a></p>
+            <div id="subscribe" class="subscribe closed">
+                <div class="form">
+                    <input class="inp" type="text" name="email" value="Введите Ваш Email" onfocus="if(this.value=='Введите Ваш Email') this.value='';" onblur="if(this.value=='') this.value='Введите Ваш Email';"/>
+                    <a class="btn" href="#" data-what="@Model.title_short (@Model.cost.ToString(("### ### ### ### ##0")).Trim() р)">ОТПРАВИТЬ <strong><big>›</big></strong></a>
+                </div>
+                <p id="subscribe_terms" class="dn">
+                    Я даю согласие на использование указанного адреса электронной почты для отправки мне информационных материалов 
+                    и сообщений (в т.ч. рекламного характера) от thai-oil.ru, а также для проведения маркетинговых, 
+                    социологических и других исследований.<br /><br />
+
+                    Я уведомлен/а о том, что данное выше согласие может быть отозвано мной в любой момент посредством перехода 
+                    по специальной ссылке, содержащейся в каждом письме рассылки.
+                </p>
+            </div>*@
+        </div>
+        <div class="desc">
+            @Html.Raw(Model.description)
+        </div>
+        <div class="accordion">
+            <div class="item">
+                <h2>Применение</h2>
+                <div class="pre_cont closed">
+                    <div class="cont">
+                        @Html.Raw(Model.usage)
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <h2>Полезный состав</h2>
+                <div class="pre_cont closed">
+                    <div class="cont">
+                        @Html.Raw(Model.ingredients)
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <h2>Доставка</h2>
+                <div class="pre_cont closed">
+                    <div class="cont">
+                        <strong>
+                            Стоимость доставки по Москве до двери: 300 руб. <br />
+                            Стоимость доставки по Москве до метро: 250 руб. <br />
+                            Стоимость доставки в Регионы: 200 руб.
+                            Самовывоз в Москве: бесплатно.</strong><br /><br />
+
+                        БЕСПЛАТНАЯ ДОСТАВКА ОТ <strong>5000</strong> РУБЛЕЙ.<br /><br />
+
+                        <strong>Доставка по Москве</strong><br />
+                        Cрок доставки 1-2 дня. Доставка осуществляется курьерской службой.<br /><br />
+
+                        <strong>Доставка по России</strong><br />
+                        Доставка заказов осуществляются в адрес физического лица через «Почту России».<br />
+                        Cрок доставки 3-7 дней. При отправке Вашего заказа мы сообщим Вам номер посылки, по которому Вы можете отслеживать ее.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="social_icons">
+            <div id="ya_share_@(Model.alias)"></div>
+        </div>
+    </div>
+    <a class="btn_close" href="#">« вернуться к каталогу</a>
+</div>
+}

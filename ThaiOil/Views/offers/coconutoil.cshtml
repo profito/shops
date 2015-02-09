@@ -1,0 +1,275 @@
+﻿@{
+    Layout = "~/_template.cshtml";
+
+    var _products = ViewBag.products as List<ThaiOil.Models.Product>;
+    var _categories = ViewBag.categories as List<ThaiOil.Models.Category>;
+
+    var controller_name = Request.RequestContext.RouteData.Values["controller"].ToString().ToLower();
+    var action_name = Request.RequestContext.RouteData.Values["action"].ToString().ToLower();
+
+}
+@section title {
+    <title>Натуральное нерафинированное кокосовое масло холодного отжима Blossom</title>
+    <meta name="description" content="Интернет-магазин кокосового масла натурального кокосового масло холодного отжима! Кокосовое масло для волос, для загара, для лица, для тела, для кожи, от растяжек. Отзывы о лучшем кокосовом масле из Тайланда." />
+    <meta name="keywords" content="кокосовое масло, кокосовое масло купить, заказать кокосовое масло, кокосовое масло из тайланда, кокосовое масло из тайланда купить, кокосовое масло для волос, кокосовое масло для загара, кокосовое масло для лица, кокосовое масло интернет магазин, польза кокосового масла" />
+
+    <style type="text/css">
+        .timer {position:absolute; top:730px; right:80px; width:203px; font-family:'Segoe UI';}
+        .timer div {color:#000; font-size:30px; line-height:35px; padding:0 0 0 12px;}
+        .timer p {margin:0; padding:1px;}
+        .timer em {width:50px; display:inline-block; color:#999; margin:0 3px; font-style:normal; font-size:10px; line-height:14px; text-align:center;}
+
+        .open_form input {margin:0 10px;}
+        .open_form p {height:18px;}
+        .open_form .submit {display:block; height:43px; margin:0 20px;}
+    </style>
+}
+
+<div class="wrapper" style="height:2100px; background:url(/img/offers/offer_vco_bg1.jpg) no-repeat 50% 0; position:relative;">
+
+    <div class="timer">
+        <div id="t_counter">13 : 12 : 10</div>
+        <p></p>
+        <em id="p_hours">ЧАСОВ</em><em id="p_minutes">МИНУТ</em><em id="p_seconds">СЕКУНД</em>
+    </div>
+
+    <form class="open_form" style="position:absolute; top:800px; left:695px; width:220px;" action="#" method="post">
+        <input type="text" name="name" value="Имя" onfocus="if(this.value=='Имя') this.value='';" onblur="if(this.value=='') this.value='Имя';" />
+        <p></p>
+        <input type="text" name="email" value="Email" onfocus="if(this.value=='Email') this.value='';" onblur="if(this.value=='') this.value='Email';" />
+        <p></p>
+        <input type="text" name="phone" value="Телефон*" onfocus="if(this.value=='Телефон*') this.value='';" onblur="if(this.value=='') this.value='Телефон*';" />
+        <p></p>
+        <a class="submit submit_order" data-what="Кокосовое масло Blossom - 200 мл (499 р) по акции" href="#"></a>
+    </form>
+</div>
+
+<h2 id="scratch_reviews"><span>ОТЗЫВЫ</span></h2>
+<div class="wrapper cb">
+    <div class="text_review">
+        <div class="item cb">
+            <a href="http://vk.com/id7400487" target="_blank"><img class="pic" alt="" src="/img/reviews/vladimirova_tatiana.jpg" /></a>
+            <a class="name vk" href="http://vk.com/id7400487" target="_blank">Татьяна Владимирова (г. Днепропетровск), парикмахер</a>
+            <div class="text">
+                Масло Blossom - настоящая находка! классная штука, это масло у нас в днепропетровске редкость. лично я, применяла его в качестве маски для волос, и для ухода за кожей. эффект великолепный! волосы стали напитанными и блестящими, а кожа после использования - бархатной. рекомендую!
+            </div>
+        </div>
+        <div class="item cb">
+            <a href="http://vk.com/tusya_yahoo" target="_blank"><img class="pic" alt="" src="/img/reviews/mironenko_natalia.jpg" /></a>
+            <a class="name vk" href="http://vk.com/tusya_yahoo" target="_blank">Наталья Мироненко (г. Волгоград)</a>
+            <div class="text">
+                Запах просто божественный!!) Но самый главный плюс - это его воздействие на волосы!! Наносила на 1 час, на длину - смывается отлично, волосы мягкие, гладкие, 
+                блестящие! А такого результата на милированных волос очень сложно добиться. <br />Спасибо Вам за масла и за подарочек)*
+            </div>
+        </div>
+
+        <p style="text-align:right; font-family:'Segoe UI'; margin:-20px 0 0;">
+            <a class="write_review" href="javascript:;" style="color:#8D5A2C;">написать свой отзыв »</a><br />
+            <a href="javascript:;" onclick="$$('.text_review .toggle').toggleClass('dn');">читать все отзывы »</a>
+        </p>
+
+        <div class="toggle dn">
+            <div class="item without_img cb">
+                <span class="name">Светлана Николаева (г. Москва) @*Время сервера 22.09.2013 17:47:36*@</span>
+                <div class="text">
+                    Обожаю кокосовое масло, использую его в уходе за телом и волосами. У масла Blossom потрясающий, очень вкусный, натуральный аромат! 
+                    Текстура и цвет – именно такие, как и должны быть у качественного масла. Но главное, мне очень понравился результат от использования. 
+                    Волосы после кокосового масла выглядят очень ухоженными, здоровыми, очень красиво блестят! Приятно удивило, что это масло хорошо смывается 
+                    (а с другими маслами были затруднения). Считается, что хорошее масло не должно вызывать проблем при смывании с волос; и в случае с данным 
+                    маслом именно так! Для тела оно тоже прекрасно подходит. Это масло хорошо впитывается, кожа становится мягкой, упругой, приятной на ощупь. 
+                    Так же, оно подойдет для загара. Спасибо, мне очень понравилось это масло!
+                </div>
+            </div>
+            <div class="item without_img cb">
+                <span class="name">Мария Маскова (г. Томск) @*Время сервера 18.09.2013 09:45:35*@</span>
+                <div class="text">
+                    Добрый день! Заказала кокосовое масло и осталась очень довольна и качеством продукта и сервисом обслуживания! Об обслуживание отдельно бы хотелось сказать. 
+                    Заказ приняли, созвонились, после оплаты на следующий день уже прислали письмо в котором сообщали об отправки с номерами для отслеживания 
+                    и фото моей посылки на которой красовался адрес и я смогла ещё раз убедится что посылка отправлена действительно туда куда следует)) 
+                    Теперь о масле масло нежное лёгкое прекрасно впитывается подходит и для массажа и для волос в виде масок, кроме того оно питьевое 
+                    и при желании его можно употребить и внутрь что тоже очень удобно - ненужно кучу баночек и скляночек! Теперь вот ещё мечтаю применить 
+                    его для загара, но лето кончилось придётся подождать следующего сезона............))! Спасибо магазину!
+                </div>
+            </div>
+            <div class="item cb">
+                <a href="http://vk.com/a.tkachenko" target="_blank"><img class="pic" alt="" src="/img/reviews/goryacheva_nastya.jpg" /></a>
+                <a class="name vk" href="http://vk.com/a.tkachenko" target="_blank">Анастасия Горячева (г. Новосибирск)</a>
+                <div class="text">
+                    Про увлажнение писать не буду и так все знают как оно смягчяет и увлажняет кожу. Что мне понравилось из других качеств... мой муж от запаха 
+                    масла был безума) Блоссом бесподобен! ... и спасибо вам за подарок, очень кстати)
+                </div>
+            </div>
+            <div class="item cb">
+                <a href="http://vk.com/rita1986" target="_blank"><img class="pic" alt="" src="/img/reviews/gilmutdinova_margarita.jpg" /></a>
+                <a class="name vk" href="http://vk.com/rita1986" target="_blank">Маргарита Гильмутдинова (г. Челябинск)</a>
+                <div class="text">
+                    Использовала кокосовое масло Blossom для волос. Как маска перед мытьём за час-два - хорошая штука. Легко смывается. 
+                    После масла волосы становятся мягче и перестают "ломаться", придаёт волосам ухоженный вид. И для загара оно шикарно, ложиться всё ровно. 
+                    Кожа остаётся нежной и гладкой на долго, а блестит как с обложки журнала! Очень понравилось! Спасибо что вы есть!
+                </div>
+            </div>
+            <div class="item cb">
+                <a href="http://vk.com/id68664410" target="_blank"><img class="pic" alt="" src="/img/reviews/chernovskaya_nastya.jpg" /></a>
+                <a class="name vk" href="http://vk.com/id68664410" target="_blank">Настя Черновская (г. Москва)</a>
+                <div class="text">
+                    Читала в инете что если сгореть на солнце и сразу намазаться кокосовым маслом то кожа не облазит. Так вот... оно действительно снимает 
+                    неприятные ощущения после ожогов! Красная кожа на шее быстро стала темной, цвета качественного загара)), жжение прошло сразу 
+                    и кожа не облезла, классно))) очень довольна
+                </div>
+            </div>
+            <div class="item cb">
+                <a href="http://vk.com/slada_om" target="_blank"><img class="pic" alt="" src="/img/reviews/koksharova_slada.jpg" /></a>
+                <a class="name vk" href="http://vk.com/slada_om" target="_blank">Слада Кокшарова (г. Москва), инструктор йоги</a>
+                <div class="text">
+                    Масло качественное, по текстуре нежное и хорошо очищенное - не слишком жирное, легко впитывается в кожу при нанесении в качестве бальзама 
+                    на тело и легко смывается с волос- если использовать как маску для волос. Запах очень приятный, натуральный - т.е. не воняет Баунти, а имеет запах свежеразрубленного кокоса. Аромат от тела-просто объедение а также 
+                    на него очень хорошо и ровно ложится загар. <br />
+                    Очень понравилось как альтернатива химическим бальзамам и маскам, т.к. 100% натуральный продукт а результат превосходит все ожидания, 
+                    кожа тела после масла нежная и очень красивая и волосы перестают ломаться. К тому же экономично расходуется, что тоже приятно. 
+                    В Москве такое тяжело найти. Спасибо!!
+                </div>
+            </div>
+            <div class="item without_img cb">
+                <span class="name">Лилия (г. Днепропетровск)</span>
+                <div class="text">
+                    Здравствуйте!!! Раньше пользовалась маслом из Таиланда для кожи, поэтому знаю зачем оно мне. В этот раз заказывала когда была беременна, 
+                    втирала в кожу живота для эластичности. Результата долго не пришлось ждать, кожа стала эластичной что и нужно было от натурального масла. 
+                    Желаю Вам побольше хороших клиентов. Развивайтесь, удачи Вам и процветания!!!
+                </div>
+            </div>
+
+            <p style="text-align:right; font-family:'Segoe UI'; margin:-20px 0 0;">
+                <a href="javascript:;" onclick="$$('.text_review .toggle').toggleClass('dn');">« закрыть</a>
+            </p>
+        </div>
+    </div>
+    <div class="audio_review">
+        <div>
+            <div><embed type="application/x-shockwave-flash" src="/content/audio/audioplayer.swf?file=/content/audio/20131102_audio4.mp3&startplay=false" width="96" height="20" allowscriptaccess="sameDomain" bgcolor="#ffffff" quality="high" wmode="opaque"></embed></div>
+            «Мне понравилось ваше масло.»
+        </div>
+        <div>
+            <div><embed type="application/x-shockwave-flash" src="/content/audio/audioplayer.swf?file=/content/audio/20131102_audio1.mp3&startplay=false" width="96" height="20" allowscriptaccess="sameDomain" bgcolor="#ffffff" quality="high" wmode="opaque"></embed></div>
+            «Всё нормально, работа хорошая. Я у вас получил, мы сейчас его принимаем, пьём.»
+        </div>
+        <div>
+            <div><embed type="application/x-shockwave-flash" src="/content/audio/audioplayer.swf?file=/content/audio/20131102_audio2.mp3&startplay=false" width="96" height="20" allowscriptaccess="sameDomain" bgcolor="#ffffff" quality="high" wmode="opaque"></embed></div>
+            «Очень понравилось, и по цвету и по запаху, т.е. качественное хорошее.»
+        </div>
+        <div>
+            <div><embed type="application/x-shockwave-flash" src="/content/audio/audioplayer.swf?file=/content/audio/20131102_audio3.mp3&startplay=false" width="96" height="20" allowscriptaccess="sameDomain" bgcolor="#ffffff" quality="high" wmode="opaque"></embed></div>
+            «Хорошее... мне очень понравилось, да. Заказала ближе к вечеру, мне его привезли сразу.»
+        </div>
+    </div>
+</div>
+
+<div class="wrapper" style="height:1100px; background:url(/img/offers/offer_vco_bg2.jpg) no-repeat 50% 0; position:relative;">
+    <a class="btn_buy" href="#" data-what="Кокосовое масло Blossom - 200 мл (499 р) по акции (внизу)"
+        style="position:absolute; top:85px; left:254px; width:190px; height:340px;"></a>
+    <a class="btn_buy" href="#" data-what="Кокосовое масло Blossom - 400 мл (1 090 р)"
+        style="position:absolute; top:85px; left:558px; width:190px; height:340px;"></a>
+
+    <form class="open_form" style="position:absolute; top:763px; left:695px; width:220px;" action="#" method="post">
+        <input type="text" name="name" value="Имя" onfocus="if(this.value=='Имя') this.value='';" onblur="if(this.value=='') this.value='Имя';" />
+        <p></p>
+        <input type="text" name="email" value="Email" onfocus="if(this.value=='Email') this.value='';" onblur="if(this.value=='') this.value='Email';" />
+        <p></p>
+        <input type="text" name="phone" value="Телефон*" onfocus="if(this.value=='Телефон*') this.value='';" onblur="if(this.value=='') this.value='Телефон*';" />
+        <p></p>
+        <a class="submit submit_order" data-what="Заявка на бесплатную консультацию (нижняя форма на акции)" href="#"></a>
+    </form>
+</div>
+
+<div class="step_palm">
+    <p>
+        ПОЧУВСТВУЙ ЛЁГКУЮ<br />
+        ПРОХЛАДУ АРОМАТНОГО<br />ЛЕТНЕГО БРИЗА И ОКУНИСЬ<br />
+        В ЧАРУЮЩУЮ СЛАДОСТЬ<br />
+        КОКОСОВОГО МАСЛА<br />
+        ИЗ САМОГО СЕРДЦА<br />
+        ТАИЛАНДА!
+    </p>
+</div>
+
+<h2>ИЗВЕСТНЫЕ ГОЛЛИВУДСКИЕ ЗВЁЗДЫ,<br />КОТОРЫЕ ПОЛЬЗУЮТСЯ КОКОСОВЫМ МАСЛОМ</h2>
+<div class="stars">
+    <p class="s1"></p><p class="s2"></p><p class="s3"></p><p class="s4"></p><p class="s5"></p>
+    <div rel="520" class="cb dn">
+        <h3>Эмили Джин Стоун</h3>
+        <div class="desc">
+            <span class="brown">Американская актриса. Наиболее известна по фильмам «Отличница лёгкого поведения», за игру в котором она была номинирована на премию «Золотой глобус» за лучшую женскую 
+            роль — комедия или мюзикл, «Прислуга» и «Новый Человек-паук», в котором она сыграла роль Гвен Стейси, девушки супергероя Человека-паука. 
+            Номинантка на премию BAFTA — Восходящая звезда.</span>
+        </div>
+        <div class="pics">
+            <img style="" alt="" src="http://99px.ru/sstorage/53/2013/03/mid_65074_4211.jpg"/>
+        </div>
+        <div class="desc">
+            <img style="float:left; margin:0 30px 0 0;" alt="" src="http://www.uznayvse.ru/images/celebs/emmastoun_small.jpg"/>
+
+            "Я аллергик, поэтому я увлажняю кожу только оливковым маслом, потому что знаю, что от него у меня точно не будет раздражения. 
+            Вечером я снимаю косметику <strong>кокосовым маслом</strong>".
+        </div>
+    </div>
+    <div rel="820" class="cb dn">
+        <h3>Дженнифер Линн Лопес</h3>
+        <div class="desc">
+            <span class="brown">Американская актриса, певица, танцовщица, модельер,продюсер и бизнес-вумен</span>
+        </div>
+        <img style="float:left; margin:0 30px 0 0; width:380px;" alt="" src="http://cs409926.vk.me/v409926043/51cb/qxQJmQPaj6w.jpg"/>
+        <div class="desc">
+            Бьюти-индустрия постоянно предлагает новые решения проблемы увлажнения кожи. Но Дженнифер Лопес признается, что в этом вопросе остается крайне консервативна: 
+            «Лучше всего увлажняют и защищают кожу средства на основе экстракта розы, авокадо и <strong>кокосового масла</strong>. После нанесения таких кремов макияж прекрасно 
+            ложится и долго держится».
+        </div>
+        <img style="width:325px;" alt="" src="http://actors-info.com/wp-content/uploads/2012/03/184.jpg"/>
+    </div>
+    <div rel="800" class="cb dn">
+        <h3>Дженнифер Джоанна Энистон</h3>
+        <img style="float:left; margin:0 30px 0 0; width:330px;" alt="" src="http://cs409926.vk.me/v409926043/5180/Tprgh3BQv7w.jpg"/>
+        <div class="desc">
+            <span class="brown">Американская актриса, наиболее известная как исполнительница роли Рэйчел Грин в телевизионном сериале «Друзья», за которую она была удостоена премий 
+                «Эмми» и «Золотой глобус». Обладательница именной звезды на Голливудской Аллее Славы, которую получила 23 февраля 2012 года, за день до американской 
+                премьеры комедии с её участием «Жажда странствий».</span>
+        </div>
+        <div class="desc">
+            Во многих диетах «от Дженифер» фигурирует кокосовое масло, которое актриса рекомендует для похудения. 
+            Диетологи пребывают в замешательстве, так как насыщенные жиры не совсем то, что нужно для достижения стройности. Но кокос – продукт, несомненно, полезный. 
+            Ведь в нем содержатся витамины и микроэлементы, которых так недостает в рационе сидящих на диете. 
+            Многие медики считают, что в рационе питания Джен есть определенные плюсы (если не считать жирных продуктов, 
+            которые так любит Энистон).
+        </div>
+    </div>
+    <div rel="730" class="cb dn">
+        <h3>Анджелина Джоли Войт</h3>
+        <div class="desc">
+            <span class="brown">Американская актриса, режиссёр и сценарист, фотомодель, посол доброй воли ООН</span>
+        </div>
+        <img style="float:left; margin:0 30px 0 0; width:350px;" alt="" src="http://cs613528.vk.me/v613528043/14a4/-2z8Qx0AqnM.jpg"/>
+        <div class="desc">
+            Обычный рацион удивительно стройной Джоли состоит из чайной ложки кокосового масла и горсти хлопьев для завтрака, иногда она просто перекусывает 
+            на ходу несколькими миндалинами и парой жевательных конфет в виде медведей.
+        </div>
+        <img style="width:324px;" alt="" src="http://static.akipress.org/127/.storage/limon/images/October2012/5ceeb840ecc41a3314762dce79ea253f.jpg"/>
+    </div>
+    <div rel="630" class="cb dn">
+        <h3>Жизель Каролин Нонненмахер Бюндхен</h3>
+        <div class="desc">
+            <span class="brown">Бразильская супермодель, одна из самых известных в мире. <br />Также она известна как одна из ангелов Victoria's Secret.</span>
+        </div>
+        <div class="pics">
+            <img alt="" src="http://www.novostimira.com.ua/gallery/1358348678_693.jpg" />
+        </div>
+        <div class="desc">
+            Как и все бразильянки, она знает толк в маслах. Её любимое – кокосовое. Это источник антиоксидантов, отличный анти-age ингредиент. 
+            Легко впитывается и не оставляет следов. Для волос Жизель так использует <strong>кокосовое масло</strong>: наносит на корни волос и кончики, массирует в течение нескольких минут, 
+            оставляет на час, затем смывает шампунем. Если нет кокосового масла, то всё то же самое она проделывает с оливковым. Роскошные волосы модели – 
+            доказательство эффективности такого масляного метода питания и увлажнения волос.<br /><br />
+
+            «Моя страсть к здоровому питанию передалась и моим детям. Они почти не едят сладкого, а старший — Бенджамин — когда ест брокколи, думает, что это десерт. 
+            На его последний день рождения мы приготовили торт из порошка какао, <strong>кокосового масла</strong> и фиников — просто взбили все в блендере и выложили в форме пирога.»
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/js/site_index.js?@(DateTime.Now.ToString("yyMMdd"))"></script>

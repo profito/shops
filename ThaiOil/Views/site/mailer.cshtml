@@ -1,0 +1,66 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mailer</title>
+    <link rel="stylesheet" type="text/css" href="/_template.css" />
+    <script src="/js/mootools-core-1.4.5.js"></script>
+    <script src="/js/mootools-more-full-1.4.0.1.js"></script>
+    <style type="text/css">
+        html, body {background:none;}
+        textarea {font-size:12px; border:1px dotted #aaa; border-radius:6px;}
+        table {width:100%; border-collapse:collapse;}
+        table td, table th {border:1px dotted #aaa; padding:5px; }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        @*<textarea id="emails_list" style="width:100%; height:150px;"></textarea>
+        <p class="h10"></p>*@
+        <input id="send_btn" style="cursor:pointer;" type="button" value="Запустить рассылку" /> <input id="statistic_btn" style="cursor:pointer;" type="button" value="Запустить вывод статистики" />
+        <p class="h20"></p>
+        <h1>Статистика рассылки</h1>
+        <div id="container"></div>
+    </div>
+    <script type="text/javascript">
+        window.addEvent('domready', function () {
+            $('send_btn').addEvent('click', function () {
+                new Request.JSON({
+                    url: '/site/mailer',
+                    onRequest: function () {
+                        $('send_btn').set('value', 'запущено');
+                    },
+                    onSuccess: function (responseJSON, responseText) {
+                        if (responseJSON.status == 1) {
+                            $('send_btn').set('value', '*** Рассылка завершена ***');
+                        } else {
+                            $('send_btn').set('value', 'ОШИБКА В РАССЫЛКЕ ' + responseJSON.error);
+                        }
+                    }
+                }).post();
+            });
+
+            $('statistic_btn').addEvent('click', function () {
+                (function () {
+                    new Request.JSON({
+                        url: '/site/mailer_statistic',
+                        onRequest: function () {
+                            $('statistic_btn').set('value', 'Статистика собирается');
+                        },
+                        onSuccess: function (responseJSON, responseText) {
+                            if (responseJSON.status == 1) {
+                                new Element('p[html="Время: ' + responseJSON.time + ' — Кол-во отправлений: ' + responseJSON.sended + '"]').inject($('container'));
+                            } else {
+                                $('statistic_btn').set('value', 'ОШИБКА В СБОРЕ СТАТИСТИКИ');
+                            }
+                        }
+                    }).post();
+                }).periodical(300000);
+            });
+        });
+    </script>
+</body>
+</html>

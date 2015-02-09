@@ -1,0 +1,750 @@
+﻿@{
+    Layout = null;
+    var products = (ViewBag.products as List<ThaiOil.Models.Product>);
+    var categories = (ViewBag.categories as List<ThaiOil.Models.Category>).OrderBy(o => o.order);
+
+
+    long category_id = 0;
+    var category_alias = String.Empty;
+
+    if (Request.RequestContext.RouteData.Values.ContainsKey("alias"))
+    {
+        category_alias = Request.RequestContext.RouteData.Values["alias"].ToString();
+
+        if (categories.FirstOrDefault(o => o.alias == category_alias) == null)
+        {
+            category_id = 0;
+            category_alias = String.Empty;
+        }
+        else
+        {
+            category_id = categories.FirstOrDefault(o => o.alias == category_alias).id;
+        }
+    }
+
+    if (string.IsNullOrEmpty(category_alias) || category_id == 0)
+    {
+        products = new List<ThaiOil.Models.Product>();
+    }
+    else
+    {
+        products = products.Where(o => o.category_id == category_id).ToList();
+    }
+}<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Админка</title>
+    <meta name="viewport" content="width=1000, maximum-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/_template.css" />
+        <link rel="stylesheet" type="text/css" href="/bootstrap.css" />
+
+    <script src="/js/mootools-core-1.4.5.js"></script>
+    <script src="/js/mootools-more-full-1.4.0.1.js"></script>
+    <style type="text/css">
+        html {background:#fff;}
+        body {padding:0;}
+        ul, ul li {list-style:none; margin:0; padding:0;}
+
+        fieldset {padding:10px; max-height:0; overflow:hidden;
+            transition:max-height 0.5s ease-in-out;}
+        fieldset:hover {max-height:500px;}
+
+        input[type=button] {cursor:pointer; font-size:14px; background:#A39167; color:#fff; border:0; border-radius:4px; padding:5px 10px;
+            transition:color 0.25s ease-in-out, background-color 0.25s ease-in-out;}
+        input[type=button]:hover {background:#000; color:#fff;}
+        input[type=text] {border:1px solid #A39167; font-size:14px; width:auto; margin:0 20px 0 0; padding:0 5px;}
+        textarea {border:1px solid #A39167; min-height:100px; font-size:14px;}
+
+        .menu p {display:inline;}
+        .menu .upper {text-transform:uppercase;}
+        .menu a {color:#666; font-family:'Segoe UI';}
+        .menu a:hover {color:#000;}
+        .menu a.active {color:#000; font-family:'Segoe UI Semibold'}
+
+        .categories ul {display:inline-block;}
+        .categories li {display:inline-block; border:1px dashed #666; margin:0 10px 5px 0; padding:3px 10px;}
+        .categories span {margin:0 10px 0 0; cursor:pointer;
+            transition:color 0.25s;}
+        .categories span:hover {color:red;}
+        .categories .handle {display:inline-block; width:14px; height:14px; margin:0 5px -2px 0; cursor:move; opacity:0.5;
+            background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAB50RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNS4xqx9I6wAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMi8zMS8xMzrmi5kAAAAWSURBVAiZBcEBAQAAAIAQ/08XUEUFDUfKB/no/GPcAAAAAElFTkSuQmCC) repeat 0 0;}
+        .categories .upper {text-transform:uppercase; font-family:'Segoe UI';}
+        .categories li li {border:0; padding:0; margin:0;}
+        .categories li span {margin:0;}
+
+        .btn_category_create {display:inline-block; width:20px; height:20px; background:#A39167; border-radius:4px; color:#fff; 
+            font-family:'Segoe UI Semibold'; font-size:15px; line-height:19px; text-align:center;
+            transition:background-color 0.25s;}
+        .btn_category_create:hover {color:#FFFFA3; background:#000;}
+
+        #product_create div span {display:inline-block;}
+
+        .product_items {padding:20px 0 50px; text-align:center;}
+        .product_items .item {display:inline-block; position:relative; width:300px; height:300px; margin:0 10px 60px;}
+        .product_items .item.not_publish {opacity:0.5;}
+        .product_items .item .pic {position:absolute; top:0; left:0; width:300px; height:300px; cursor:pointer;}
+        .product_items .item .body {position:absolute; bottom:0; left:0; width:100%; text-align:center; background:rgba(255,255,255,0.9);}
+        .product_items .item .body h2 {font-size:16px; font-family:'Segoe UI'; color:#333; margin:0; padding:5px 0 6px;}
+        .product_items .item .body .cost {color:#CE6015; font-family:'Segoe UI Semibold'; font-size:14px; line-height:1; margin:0 0 5px;}
+        .product_items .item .btn_product_delete {display:none; position:absolute; top:10px; right:10px; background:#a72f2f; color:#fff;  opacity:0.5;}
+        .product_items .item .btn_product_delete:hover {opacity:1;}
+        .product_items .item .handle {display:none; position:absolute; top:10px; left:10px; width:24px; height:24px; cursor:move; opacity:0.5;
+            background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAB50RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNS4xqx9I6wAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMi8zMS8xMzrmi5kAAAAWSURBVAiZBcEBAQAAAIAQ/08XUEUFDUfKB/no/GPcAAAAAElFTkSuQmCC) repeat 0 0;}
+        .product_items .item form {display:none;}
+        .product_items .item:hover .handle {display:block;}
+        .product_items .item:hover .btn_product_delete {display:block;}
+
+        .product_items .item.opened {width:100%; height:auto;}
+        .product_items .item.opened .pic {left:auto; right:0; z-index:5;}
+        .product_items .item.opened .body {display:none;}
+        .product_items .item.opened .handle {display:none;}
+        .product_items .item.opened form {display:block; margin:0 0 30px; border:1px dotted #A39167; padding:10px; position:relative; text-align:left;}
+        .product_items .item.opened form p {margin:0 0 5px;}
+        .product_items .item.opened form label {display:inline-block; width:150px; text-align:right; margin:0 7px 0 0; cursor:default;}
+        .product_items .item.opened form input[type=button] {margin:0 0 0 160px;}
+        .product_items .item.opened form textarea {margin:0 0 0 160px; width:700px;}
+
+        .blossom_popup_back {z-index:100; position:absolute; top:0; left:0; width:100%; background:#000;}
+        .blossom_popup_cont {z-index:101; position:absolute; top:0; left:0; min-width:32px; min-height:32px;
+	        padding:10px; border:1px solid #454545; background:#fff; box-shadow:0 0 20px #000;}
+        .blossom_popup_cont.preload {background:#fff url(/img/preloader.gif) no-repeat 20px 91%;}
+        .blossom_popup_cont.preload2 {background:#fff url(/img/preloader.gif) no-repeat 20px 94%;}
+        .blossom_popup_border {padding:10px;}
+        .blossom_popup_cont .close_btn {position:absolute; top:-32px; right:-32px; cursor:pointer; width:24px; height:24px;}
+        .blossom_popup_cont .submit {display:block; width:200px; margin:10px auto 0; padding:10px 0; font-size:18px; border-radius:4px;
+            color:#fff; font-weight:bold; border:0; cursor:pointer; text-decoration:none; text-align:center; background-color:#5AAE1D;
+            transition:background-color 0.25s;}
+        .blossom_popup_cont .submit:hover {color:#FFFFA3; background-color:#5cc80e;}
+        .blossom_popup_cont .remove {background-color:#a72f2f;}
+
+        .show_children:hover + ul{ display:block;}
+        .show_children + ul:hover{display:block;}
+        .wrapper legend {font-size: 17px;cursor:pointer;}
+        .nav.navbar-nav {margin: 0 50%; width: 1100px; left: -550px; position: absolute; }
+        .item.opened img{display:none;}
+        .col-sm-4 form {height: 100px;}
+        .form-group button.btn.btn-info {margin: 10px 0 0 0;float: right;}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
+                    <ul class="nav navbar-nav">
+                        <li id="punct1" class="elem_menu active"><a href="/__admin">ГЛАВНАЯ</a>
+                        </li>
+                         @foreach (var item in categories.Where(o => o.parent_id == 0))
+                         {
+                             var arrParent = categories.Where(o => o.parent_id == item.id);
+                            <li id="punct1" class="elem_menu ">
+                                @if (arrParent.Count() > 0)
+                                {
+                                    <a class="upper show_children @(item.id == category_id ? "active" : "")" href="/__admin/category/@item.alias">@item.title</a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        @foreach (var item2 in arrParent)
+                                        {
+                                            <li><a @(item2.id == category_id ? "class=active" : "") href="/__admin/category/@item2.alias">@item2.title</a></li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <a class="upper @(item.id == category_id ? "active" : "")" href="/__admin/category/@item.alias">@item.title</a>
+                                }
+                            </li>
+                         }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    <div class="wrapper">
+        <fieldset>
+            <legend>Редактирование категорий</legend>
+            <div id="category_items">
+                <ul class="categories">
+                    @foreach (var item in categories.Where(o => o.parent_id == 0))
+                    {
+                        <li>
+                            <span data-id="@item.id" data-alias="@item.alias" data-title="@item.title" class="upper"><em class="handle"></em>@item.title</span>
+                            (
+                                <ul>
+                                    @foreach (var item2 in categories.Where(o => o.parent_id == item.id))
+                                    {
+                                        <li><span data-id="@item2.id" data-alias="@item2.alias" data-title="@item2.title" data-parent-id="@item2.parent_id"><em class="handle"></em>@item2.title</span></li>
+                                    }
+                                </ul>
+                                <a class="btn_category_create" href="#" data-parent-id="@item.id">+</a>
+                            )
+                        </li>
+                    }
+                    <li><a class="btn_category_create" href="#">+</a></li>
+                </ul>
+                <br />
+                <small style="color:#a72f2f;">При удалении категории, все товары из неё переносятся в категорию "Товары без категории"</small>
+            </div>
+        </fieldset>
+
+        <p class="h10"></p>
+        <div>
+            <form action="/__admin/product_create" method="post">
+                <fieldset id="product_create">
+                    <legend>Добавление продукта</legend>
+                    <div>
+                        <span>Алиас ссылки* <input type="text" name="alias" value=""/></span>
+                        <span>
+                            Краткое название* <input type="text" name="title_short" value=""/><br />
+                            Полное название* <input type="text" name="title_full" value=""/>
+                        </span>
+                        <span>
+                            Категория 
+                            <select name="category_id" required="required">
+                                @foreach (var item in categories.Where(o => o.parent_id == 0))
+                                {
+                                    <option value="@item.id" @(item.alias == "other" ? "selected=selected" : "")>@item.title</option>
+                                    foreach (var item2 in categories.Where(o => o.parent_id == item.id))
+                                    {
+                                    <option value="@item2.id">&nbsp;&nbsp;&nbsp;@item2.title</option>
+                                    }
+                                }
+                            </select>
+                        </span>
+                        <input id="btn_product_create" type="button" value="Создать"/>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <p class="h20"></p>
+
+        @*<h1>Товары</h1>*@
+        <script>var pict =[];</script>
+        <ul id="product_items" class="product_items">
+            @foreach (var item in products.OrderBy(o => o.order))
+            {
+                <li id="ellemet_@(item.id)" class="item @(item.isPublish == false ? "not_publish" : "")" data-id="@item.id" data-alias="@item.alias">
+                    <img class="pic" alt="" src="@item.path_preview" onclick="this.getParent().toggleClass('opened');" />
+                    <div class="body">
+                        <h2>@item.title_short</h2>
+                        <p class="cost">@item.cost.ToString(("### ### ### ### ##0")).Trim() р</p>
+                    </div>
+                    <div class="form-horizontal" style="margin-top:50px;">
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                @using (Html.BeginForm("index", "__admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    <form action="/__admin/_img/@(item.id)" method="post">
+                                        <input type="hidden" name="id_img" class="form-control" value="@(item.id)" />
+                                        <input type="file" name="file" class="form-control">
+                                        <input type="hidden" name="preview" value="1">
+                                        <button type="submit" class="btn btn-info">Загрузить превью</button>
+                                    </form>
+                                }
+                            </div>
+                            <div class="col-sm-4">
+                                @using (Html.BeginForm("index", "__admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    <form action="/__admin/_img/@(item.id)" method="post">
+                                        <input type="hidden" name="id_img" class="form-control" value="@(item.id)" />
+                                        <input type="file" name="file" class="form-control">
+                                        <input type="hidden" name="big" value="1">
+                                        <button type="submit" class="btn btn-info">Загрузить большую картинку</button>
+                                    </form>
+                                }
+                            </div>
+                            <div class="col-sm-4">
+                                @using (Html.BeginForm("index", "__admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    <form action="/__admin/_img/@(item.id)" method="post">
+                                        <input type="hidden" name="id_img" class="form-control" value="@(item.id)" />
+                                        <input type="file" name="file" class="form-control">
+                                        <input type="hidden" name="big" value="1">
+                                        <input type="hidden" name="preview" value="1">
+                                        <button type="submit" class="btn btn-info">Загрузить обе</button>
+                                    </form>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <form action="/__admin/product_edit/@(item.id)" method="post">
+                        <p><label><strong>Показать на сайте?</strong></label> <input type="checkbox" name="isPublish" @(item.isPublish == true ? "checked=checked" : "")/></p>
+                        <p><label>Показать на главной странице?</label> <input type="checkbox" name="isMainPage" @(item.isMainPage == true ? "checked=checked" : "")/></p>
+                        <p><label>Показать в новинках?</label> <input type="checkbox" name="isNew" @(item.isNew == true ? "checked=checked" : "")/></p>
+                        <p><label>Категория</label> 
+                            <select name="category_id">
+                                @foreach (var category in categories.Where(o => o.parent_id == 0))
+                                {
+                                    <option value="@category.id" @(category.id == item.category_id ? "selected=selected" : "")>@category.title</option>
+                                    foreach (var category2 in categories.Where(o => o.parent_id == category.id))
+                                    {
+                                    <option value="@category2.id" @(category2.id == item.category_id ? "selected=selected" : "")>&nbsp;&nbsp;&nbsp;@category2.title</option>
+                                    }
+                                }
+                            </select></p>
+                        <p><label class="red">Алиас ссылки*</label> <input type="text" size="80" name="alias" value="@item.alias"/></p>
+                        <p><label>Дата добавления</label> <input type="text" name="date_created" value="@item.date_created.ToString("dd/MM/yyyy HH:mm:ss")" disabled="disabled"/></p>
+                        <p><label>Краткое название</label> <input type="text" size="80" name="title_short" value="@item.title_short"/></p>
+                        <p><label>Полное название</label> <input type="text" size="80" name="title_full" value="@item.title_full"/></p> 
+                        <p><label>Превью</label> <input type="text" size="80" name="path_preview"  value="@item.path_preview" / ></p>
+                        <p><label>Большая картинка</label> <input type="text" size="80" name="path_big" value="@item.path_big" /></p> 
+                        <p><label>Цена</label> <input type="number" name="cost" value="@item.cost"/></p>
+                        <p><label>Старая цена</label> <input type="number" name="cost_old" value="@item.cost_old"/></p>
+                        <p><label>Иконки</label> <input type="text" size="80" name="icons" value="@item.icons"/><br /><small style="margin:0 0 0 160px; color:#666;">@String.Join(",", ThaiOil.Models.Icons.product_icons)</small></p>
+                        <p><label>Сопутствующие товары</label> <input type="text" size="80" name="related_products" value="@item.related_products"/></p>
+                        <div>
+                            <label>Описание</label><br />
+                            <textarea name="description">@item.description</textarea><br /><br />
+
+                            <label>Применение</label><br />
+                            <textarea name="usage">@item.usage</textarea><br /><br />
+
+                            <label>Состав</label><br />
+                            <textarea name="ingredients">@item.ingredients</textarea><br /><br />
+
+                            <label>Для технических нужд</label><br />
+                            <textarea name="own_desc" style="min-height:50px;">@item.own_desc</textarea>
+                        </div>
+                        <br />
+                        <input class="btn_product_edit" type="button" value="Сохранить"/>
+                    </form>
+                    <span class="handle"></span>
+                    <input class="btn_product_delete" data-id="@(item.id)" type="button" value="&#10005"/>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <script type="text/ecmascript">
+        window.addEvent('domready', function () {
+           
+
+            $$('.btnFileUpload').addEvent('click',function () {
+
+                var formData = new FormData();
+                var file = document.getElementById("fileInput").files[0];
+                formData.append("fileInput", file);
+
+
+                var formData = new FormData();
+                var file = document.getElementById("fileInput").files[0];
+                formData.append("fileInput", file);
+                var myRequest = new Request({
+                    url: "/__admin/index",
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    onProgress: function (event, xhr) {
+                        t = xhr;
+                        console.log(xhr);
+                        console.log(xhr);
+                        console.log(event);
+
+                    }
+                });
+                myRequest.send();
+                    
+            });
+
+       
+
+
+            ////////////////////////////////////////////////////////////////////
+            // КАТЕГОРИИ
+            ////////////////////////////////////////////////////////////////////
+
+            // порядок, сортировка
+            var previous_category_sort = [];
+            var new_category_sort = [];
+
+            new Sortables('#category_items ul', {
+                handle: '.handle',
+                constrain: true,
+                clone: true,
+                revert: true,
+                opacity: 0.5,
+                onStart: function (element, clone) {
+                    clone.addClass('clone');
+
+                    // обнулим значения
+                    previous_category_sort = [];
+                    new_category_sort = [];
+
+                    // запишем изначальную сортировку
+                    $$('.categories li:not(.clone) > span, .categories li li:not(.clone) > span').each(function (item, i) {
+                        console.log(item.getParent().hasClass('clone'));
+                        previous_category_sort.push(item.get('data-id'));
+                    });
+                },
+                onComplete: function (element) {
+                    $$('.categories li:not(.clone) > span, .categories li li:not(.clone) > span').each(function (item, i) {
+                        new_category_sort.push(item.get('data-id'));
+                    });
+                    var isAnyBigEnough = previous_category_sort.some(function (item, i) {
+                        return item != new_category_sort[i];
+                    });
+                    if (isAnyBigEnough) {
+                        // порядок изменился, сохраним изменения
+                        new Request.JSON({
+                            url: '/__admin/category_change_order',
+                            onSuccess: function (responseJSON, responseText) {
+                                if (responseJSON.status == 1) {
+                                    $('category_items').highlight();
+                                } else {
+                                    alert('К сожалению на сервере произошла ошибка.\n\n' + responseJSON.error);
+                                }
+                            }
+                        }).post({ 'new_sort': new_category_sort });
+                    }
+                }
+            });
+
+            document.body.addEvent('click:relay(.btn_category_create)', function (e) {
+                if (e) e.stop();
+
+                var parent_id = null;
+                if (this.get('data-parent-id')) {
+                    parent_id = this.get('data-parent-id');
+                }
+
+                var form = new Element('form.popup_form[method=post][action=#]');
+                new Element('h1[html=ДОБАВЛЕНИЕ КАТЕГОРИИ]').inject(form);
+                new Element('input[type=text][name=alias][placeholder=Alias]').inject(form);
+                new Element('p').inject(form);
+                new Element('input[type=text][name=title][placeholder=Название]').inject(form);
+                new Element('p').inject(form);
+                new Element('a.submit[html=ДОБАВИТЬ][href=#]').addEvent('click', function (e) {
+                    if (e) e.stop();
+
+                    var obj = this.getParent().toJSON();
+                    obj.parent_id = parent_id;
+
+                    if (!obj.alias || obj.alias.trim() == '') {
+                        alert('Укажите alias');
+                        return false;
+                    }
+
+                    if (!obj.title || obj.title.trim() == '') {
+                        alert('Укажите название');
+                        return false;
+                    }
+
+                    new Request.JSON({
+                        url: '/__admin/category_create',
+                        onSuccess: function (responseJSON, responseText) {
+                            if (responseJSON.status == 1) {
+                                window.location.reload();
+                            } else {
+                                alert('К сожалению на сервере произошла ошибка.\n\n' + responseJSON.error);
+                            }
+                        }
+                    }).post(obj);
+                }).inject(form);
+                new burnUp({ 'offset': 200, 'html': form });
+            });
+
+            document.body.addEvent('click:relay(.categories span)', function (e) {
+                if (e) e.stop();
+
+                var parent_id = null;
+                if (this.get('data-parent-id')) {
+                    parent_id = this.get('data-parent-id');
+                }
+
+                var id = this.get('data-id');
+
+                var form = new Element('form.popup_form[method=post][action=#]');
+                new Element('h1[html=УПРАВЛЕНИЕ КАТЕГОРИЕЙ]').inject(form);
+                new Element('input[type=text][name=alias][value=' + this.get('data-alias') + ']').inject(form);
+                new Element('p').inject(form);
+                new Element('input[type=text][name=title][value=' + this.get('data-title') + ']').inject(form);
+                new Element('p').inject(form);
+                new Element('a.submit[html=СОХРАНИТЬ][href=#]').addEvent('click', function (e) {
+                    if (e) e.stop();
+
+                    var obj = this.getParent().toJSON();
+                    obj.parent_id = parent_id;
+
+                    if (!obj.alias || obj.alias.trim() == '') {
+                        alert('Укажите alias');
+                        return false;
+                    }
+
+                    if (!obj.title || obj.title.trim() == '') {
+                        alert('Укажите название');
+                        return false;
+                    }
+
+                    new Request.JSON({
+                        url: '/__admin/category_edit/' + id,
+                        onSuccess: function (responseJSON, responseText) {
+                            if (responseJSON.status == 1) {
+                                window.location.reload();
+                            } else {
+                                alert('К сожалению на сервере произошла ошибка.\n\n' + responseJSON.error);
+                            }
+                        }
+                    }).post(obj);
+                }).inject(form);
+
+                new Element('a.submit.remove[html=УДАЛИТЬ][href=#]').addEvent('click', function (e) {
+                    if (e) e.stop();
+
+                    if (confirm("Точно удалить?")) {
+                        new Request.JSON({
+                            url: '/__admin/category_delete/' + id,
+                            onSuccess: function (responseJSON, responseText) {
+                                if (responseJSON.status == 1) {
+                                    window.location.reload();
+                                } else {
+                                    alert('К сожалению на сервере произошла ошибка.\n\n' + responseJSON.error);
+                                }
+                            }
+                        }).post();
+                    }
+                }).inject(form);
+                new burnUp({ 'offset': 200, 'html': form });
+            });
+
+
+            ////////////////////////////////////////////////////////////////////
+            // ПРОДУКТЫ
+            ////////////////////////////////////////////////////////////////////
+
+            // порядок, сортировка
+            var previous_product_sort = [];
+            var new_product_sort = [];
+            new Sortables('#product_items', {
+                handle: '.handle',
+                clone: true,
+                revert: true,
+                opacity: 0.5,
+                onStart: function (element, clone) {
+                    clone.addClass('clone');
+
+                    // обнулим значения
+                    previous_product_sort = [];
+                    new_product_sort = [];
+
+                    // запишем изначальную сортировку
+                    $$('.product_items .item:not(.clone)').each(function (item, i) {
+                        previous_product_sort.push(item.get('data-id'));
+                    });
+                },
+                onComplete: function (element) {
+                    $$('.product_items .item:not(.clone)').each(function (item, i) {
+                        new_product_sort.push(item.get('data-id'));
+                    });
+                    var isAnyBigEnough = previous_product_sort.some(function (item, i) {
+                        return item != new_product_sort[i];
+                    });
+                    if (isAnyBigEnough) {
+                        // порядок изменился, сохраним изменения
+                        new Request.JSON({
+                            url: '/__admin/product_change_order',
+                            onSuccess: function (responseJSON, responseText) {
+                                if (responseJSON.status == 1) {
+                                    $('product_items').highlight();
+                                } else {
+                                    alert('К сожалению на сервере произошла ошибка.\n\n' + responseJSON.error);
+                                }
+                            }
+                        }).post({ 'new_sort': new_product_sort });
+                    }
+                }
+            });
+
+            // добавление продукта
+            $('btn_product_create').addEvent('click', function () {
+                var obj = this.getParent().toJSON();
+
+                if (!obj.alias || obj.alias.trim() == '') {
+                    alert('Укажите Alias');
+                    return false;
+                }
+
+                if (!obj.title_short || obj.title_short.trim() == '') {
+                    alert('Укажите Краткое название');
+                    return false;
+                }
+
+                if (!obj.title_full || obj.title_full.trim() == '') {
+                    alert('Укажите Полное название');
+                    return false;
+                }
+
+                if (!obj.category_id || obj.category_id.trim() == '') {
+                    alert('Укажите Категорию');
+                    return false;
+                }
+
+                new Request.JSON({
+                    url: '/__admin/product_create',
+                    onSuccess: function (responseJSON, responseText) {
+                        if (responseJSON.status == 1) {
+                            window.location.reload();
+                        } else {
+                            alert('К сожалению на сервере произошла ошибка.\n\n' + responseJSON.error);
+                        }
+                    }
+                }).post(obj);
+            });
+
+            // редактирование
+            document.body.addEvent('click:relay(.btn_product_edit)', function (e) {
+                if (e) e.stop();
+
+                var obj = this.getParent().toJSON();
+                
+                if (!obj.alias || obj.alias.trim() == '') {
+                    alert('Укажите alias');
+                    return false;
+                }
+
+                var link_to_post = this.getParent().get('action');
+
+                new Request.JSON({
+                    url: link_to_post,
+                    onSuccess: function (responseJSON, responseText) {
+                        if (responseJSON.status == 1) {
+                            window.location.reload();
+                        } else {
+                            alert('К сожалению на сервере произошла ошибка.\n\n' + responseJSON.error);
+                        }
+                    }
+                }).post(obj);
+            });
+
+            // удаление
+            document.body.addEvent('click:relay(.btn_product_delete)', function (e) {
+                if (e) e.stop();
+
+                var id = this.get('data-id');
+
+                if (confirm("Точно удалить?")) {
+                    new Request.JSON({
+                        url: '/__admin/product_delete/' + id,
+                        onSuccess: function (responseJSON, responseText) {
+                            if (responseJSON.status == 1) {
+                                window.location.reload();
+                            } else {
+                                alert('К сожалению на сервере произошла ошибка.\n\n' + responseJSON.error);
+                            }
+                        }
+                    }).post();
+                }
+            });
+        });
+
+        Element.implement({
+            toJSON: function () {
+                var json = {};
+                this.getElements('input, select, textarea', true).each(function (el) {
+                    if (!el.name || el.disabled || el.type == 'submit' || el.type == 'reset' || el.type == 'file') return;
+                    var value;
+                    if (el.tagName.toLowerCase() == 'select') {
+                        value = Element.getSelected(el).map(function (opt) {
+                            return opt.value;
+                        });
+                    } else {
+                        if (el.type == 'radio' && !el.checked) {
+                            value = null;
+                        } else if (el.type == 'checkbox') {
+                            value = el.checked;
+                        } else {
+                            value = el.value;
+                        }
+                    }
+
+                    Array.from(value).each(function (val) {
+                        if (typeof val != 'undefined') {
+                            json[el.name] = val;
+                        }
+                    });
+                });
+                return json;
+            }
+        });
+
+        burnUp = new Class({
+            Implements: [Options, Events, Chain],
+            options: {
+                'width': 400,
+                'opacity': 0.9,
+                'offset': 50,
+                'popup_back': null,
+                'popup_cont': null,
+                'popup_border': null,
+                'popup_cont_class': null,
+                'html': null
+            },
+            initialize: function (options) {
+                this.setOptions(options);
+
+                var _tc = this.options.this_class = this;
+                var _tc_o = _tc.options;
+
+                //создадим html
+                _tc_o.popup_back = new Element('div.blossom_popup_back').setStyle('opacity', _tc_o.opacity).inject(document.body);
+                _tc_o.popup_cont = new Element('div.blossom_popup_cont').setStyle('width', _tc_o.width).inject(document.body);
+                if (_tc_o.popup_cont_class) {
+                    _tc_o.popup_cont.addClass(_tc_o.popup_cont_class);
+                }
+                _tc_o.popup_border = new Element('div.blossom_popup_border').inject(_tc_o.popup_cont);
+                new Element('img.close_btn[alt=""][src="/img/icon_close.png"]')
+                    .addEvent('click', function () { _tc.close(); }).inject(_tc_o.popup_cont);
+
+                //присвоим класс к диву, чтобы найти объект всплывающего окна по диву div.blossom_popup_cont
+                _tc_o.popup_cont.store('popup_class', _tc);
+
+                // расстянем фон на весь экран
+                if (_tc_o.popup_back.getHeight().toInt() < window.getScrollSize().y)
+                    _tc_o.popup_back.setStyle('height', window.getScrollSize().y);
+
+                _tc_o.popup_back.addEvent('click', function () { _tc.close(); });
+
+                // зададим координаты
+                _tc_o.popup_cont.setStyles({
+                    'top': _tc_o.offset + window.getScroll().y,
+                    'left': window.getSize().x / 2 - _tc_o.popup_cont.getWidth() / 2 + window.getScroll().x
+                });
+
+                //вставим код
+                if (_tc_o.html) {
+                    if (typeOf(_tc_o.html) == 'string' || typeOf(_tc_o.html) == 'number') {
+                        _tc_o.popup_border.set('html', _tc_o.html);
+                    } else {
+                        _tc_o.html.inject(_tc_o.popup_border);
+                    }
+                }
+
+                return _tc;
+            },
+            clear: function () {
+                this.options.popup_border.empty();
+
+                return this;
+            },
+            set: function (html) {
+                var _tc_o = this.options;
+
+                if (typeOf(html) == 'string' || typeOf(html) == 'number') {
+                    _tc_o.popup_border.set('html', html);
+                } else {
+                    html.inject(_tc_o.popup_border);
+                }
+
+                return this;
+            },
+            close: function () {
+                var _tc = this.options.this_class;
+                var _tc_o = _tc.options;
+
+                _tc_o.popup_back.destroy();
+                _tc_o.popup_cont.destroy();
+
+                return _tc;
+            }
+        });
+    </script>
+</body>
+</html>

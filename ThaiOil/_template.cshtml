@@ -1,0 +1,72 @@
+﻿@{
+    var controller_name = Request.RequestContext.RouteData.Values["controller"].ToString().ToLower();
+    var action_name = Request.RequestContext.RouteData.Values["action"].ToString().ToLower();
+}<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    @RenderSection("title", true)
+    <meta name="viewport" content="width=1000, maximum-scale=1.0" />
+    <link rel="icon" type="image/png" href="/img/favicon.png" />
+    <link rel="stylesheet" type="text/css" href="/_template.css" />
+    <script src="/js/mootools-core-1.4.5.js"></script>
+    <script src="/js/mootools-more-1.4.0.1.js"></script>
+    <script src="/js/template.js?2"></script>
+    @*<script type="text/javascript" src="//vk.com/js/api/openapi.js?98"></script>
+    <script type="text/javascript">VK.init({ apiId: 3847082, onlyWidgets: true });</script>*@
+</head>
+<body class="page_@(controller_name) page_@(controller_name)_@(action_name)">
+    <div class="header">
+        <div class="wrapper">
+            <div class="menu cb">
+                <div class="l">
+                    <a href="/#scratch_catalog">ПРОДУКЦИЯ</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/site/partners">ГДЕ КУПИТЬ / ПАРТНЁРЫ</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    @*<a href="/site/wholesale" target="_blank">ОПТОВИКАМ</a>*@
+                    <a href="/site/about">МИССИЯ</a>@*&nbsp;&nbsp;&nbsp;&nbsp;*@
+                </div>
+                <div class="r">
+                    
+                    <a href="/articles">СТАТЬИ</a>&nbsp;&nbsp;&nbsp;
+                    <a href="/site/delivery">ДОСТАВКА И ОПЛАТА</a>&nbsp;&nbsp;&nbsp;
+                    @*<a href="/#scratch_reviews">ОТЗЫВЫ</a>&nbsp;&nbsp;&nbsp;*@
+                    <a href="/site/contacts">КОНТАКТЫ</a>
+                </div>
+            </div>
+            <a href="/"><img class="logo" alt="" src="/img/logo.png"/></a>
+            <span class="recall"><span>ЗАКАЗАТЬ ОБРАТНЫЙ ЗВОНОК</span></span>
+        </div>
+    </div>
+
+	<p style="font-size:20px; color:#e21f1f; padding:0 0 30px; font-weight:700; text-align:center;">
+		Дорогие покупатели! <br/>Наш интернет-магазин будет закрыт с 28 января по 10 февраля.  <br />
+		Тех покупателей, кто подождет свой заказ <br />до 11 февраля — ожидает классный подарок!!!  <br />
+		Оставляйте заявки, а мы Вам перезвоним 11 февраля.
+	</p>
+
+    @RenderBody()
+
+    <div class="footer_ya_social">
+        <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareQuickServices="yaru,vkontakte,facebook,twitter,odnoklassniki,moimir,gplus" data-yashareTheme="counter"></div>
+        <span class="grey fs12">поделись страницей с друзьями</span>
+    </div>
+
+    <div class="footer">
+        <a class="vk_link" href="http://vk.com/thaioil" target="_blank"></a>
+        <a class="fb_link" href="http://facebook.com/groups/245167825662582/" target="_blank"></a>
+        <a class="in_link" href="http://instagram.com/blossomgroup" target="_blank"></a>
+        <a class="tw_link" href="http://twitter.com/www_thai_oil_ru" target="_blank"></a>
+        <a class="ok_link" href="http://odnoklassniki.ru/group/52204058116169" target="_blank"></a>
+        <a class="lj_link" href="http://thai-oil-ru.livejournal.com/" target="_blank"></a>
+        <a class="mm_link" href="http://my.mail.ru/community/thai_oil_ru/" target="_blank"></a>
+       
+    </div>
+
+       
+        
+        <!-- Yandex.Metrika counter -->
+  
+        <script type="text/javascript">var yaCounter21775183 = null; var ga = null;</script>
+    
+</body>
+</html>
